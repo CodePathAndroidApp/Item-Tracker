@@ -8,13 +8,13 @@
 
 ## Overview
 ### Description
-[Description of your app]
+Item Tracker is an app that helps users remember where their lost items (e.g. glasses, keys, wallet, car, etc.) are. Users can save a picture of the item and save it to a database along with its location and description. They can then look up the item information if they forget it later.
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
 - **Category:**
-- **Mobile:**
-- **Story:**
+- **Mobile:** The user can use the camera to take a picture of the item they want to keep track of and the map/location functions to save the general location of the item.
+- **Story:** The app is primarily useful for people who often misplace their things and have trouble remembering where they parked their car or where they left their keys.
 - **Market:**
 - **Habit:**
 - **Scope:**
@@ -25,13 +25,17 @@
 
 **Required Must-have Stories**
 
-* [fill in your required user stories here]
-* ...
+- [ ] User can sign up to create a new account using Parse authentication.
+- [ ] User can log in and log out of his or her account.
+- [ ] The current signed in user is persisted across app restarts.
+- [ ] User can take a photo, add an item type description, and post it to the database.
+- [ ] Posts are accompanied by map and location data of the place where the post is made
+- [ ] User can use a search bar to look up previous posts
 
 **Optional Nice-to-have Stories**
+- [ ] User can share their posts with other users to help in their search
+- [ ] Other users can leave tips/comments on shared posts
 
-* [fill in your required user stories here]
-* ...
 
 ### 2. Screen Archetypes
 
