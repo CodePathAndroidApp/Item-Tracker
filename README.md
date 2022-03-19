@@ -11,13 +11,12 @@
 Item Tracker is an app that helps users remember where their lost items (e.g. glasses, keys, wallet, car, etc.) are. Users can save a picture of the item and save it to a database along with its location and description. They can then look up the item information if they forget it later.
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
-- **Category:**
+- **Category:** Photo,
 - **Mobile:** The user can use the camera to take a picture of the item they want to keep track of and the map/location functions to save the general location of the item.
 - **Story:** The app is primarily useful for people who often misplace their things and have trouble remembering where they parked their car or where they left their keys.
-- **Market:**
-- **Habit:**
-- **Scope:**
+- **Market:** Anyone who loses item easily would find this app useful. 
+- **Habit:** User can take picture of item anytime they feel like they will easily lose an item. 
+- **Scope:** This app start out being a simple item tracker can expand to other functionality like posting picture of items lost and their location. 
 
 ## Product Spec
 
