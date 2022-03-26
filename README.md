@@ -27,7 +27,7 @@ Item Tracker is an app that helps users remember where their lost items (e.g. gl
 - [x] User can sign up to create a new account using Parse authentication.
 - [x] User can log in and log out of his or her account.
 - [x] The current signed in user is persisted across app restarts.
-- [x] User can take a photo, add an item type description, and post it to the database.
+- [ ] User can take a photo, add an item type description, and post it to the database.
 - [ ] Posts are accompanied by map and location data of the place where the post is made
 - [ ] User can use a search bar to look up previous posts
 
