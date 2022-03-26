@@ -17,7 +17,6 @@ import com.parse.*
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
-
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Submit post when submit button is clicked
         findViewById<Button>(R.id.btnSubmit).setOnClickListener {
             val description = findViewById<EditText>(R.id.description).text.toString()
             val lostlocation = findViewById<EditText>(R.id.lostlocation).text.toString()
@@ -33,10 +33,15 @@ class MainActivity : AppCompatActivity() {
             if (photoFile != null) {
                 submitPost(description, lostlocation, user, photoFile!!)
             } else {
+                // print error log message
+                Log.e(TAG, "Error posting photo")
+                // show toast
+                Toast.makeText(this, "Error in posting photo", Toast.LENGTH_SHORT).show()
             }
         }
 
         findViewById<Button>(R.id.btnTakePicture).setOnClickListener {
+            // launch
             onLaunchCamera()
         }
 
@@ -59,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Launch Camera
     fun onLaunchCamera() {
         // create Intent to take a picture and return control to the calling application
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -70,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
         if (photoFile != null) {
             val fileProvider: Uri =
-                FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile!!)
+                FileProvider.getUriForFile(this, "com.codepath.fileprovider.Item_Tracker", photoFile!!)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
 
             // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
@@ -102,7 +108,6 @@ class MainActivity : AppCompatActivity() {
         return File(mediaStorageDir.path + File.separator + fileName)
     }
 
-
     fun submitPost(description: String, lostlocation : String, user: ParseUser, file: File) {
         val post = Post()
         post.setDescription(description)
@@ -114,15 +119,15 @@ class MainActivity : AppCompatActivity() {
                 // Something has went wrong
                 Log.e(TAG, "Error while saving post")
                 exception.printStackTrace()
+                Toast.makeText(this, "Error in saving post", Toast.LENGTH_SHORT).show()
             } else {
+                Toast.makeText(this, "Successfully saved post", Toast.LENGTH_SHORT).show()
                 Log.i(TAG, "Successfully saved post")
             }
-
         }
     }
 
     fun queryPost() {
-
         // Specify which class to query
         val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
         // Find all Post objects
