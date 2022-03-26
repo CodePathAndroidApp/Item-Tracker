@@ -30,7 +30,14 @@ class MainActivity : AppCompatActivity() {
             val description = findViewById<EditText>(R.id.description).text.toString()
             val lostlocation = findViewById<EditText>(R.id.lostlocation).text.toString()
             val user = ParseUser.getCurrentUser()
-            submitPost(description, lostlocation ,user)
+            if (photoFile != null) {
+                submitPost(description, lostlocation, user, photoFile!!)
+            } else {
+                // print error log message
+                Log.e(TAG, "Error posting photo")
+                // show toast
+                Toast.makeText(this, "Error in posting photo", Toast.LENGTH_SHORT).show()
+            }
         }
 
         findViewById<Button>(R.id.btnTakePicture).setOnClickListener {
@@ -101,11 +108,12 @@ class MainActivity : AppCompatActivity() {
         return File(mediaStorageDir.path + File.separator + fileName)
     }
 
-    fun submitPost(description: String, lostlocation : String, user: ParseUser) {
+    fun submitPost(description: String, lostlocation : String, user: ParseUser, file: File) {
         val post = Post()
         post.setDescription(description)
         post.setLostDescription(lostlocation)
         post.setUser(user)
+        post.setImage(ParseFile(file))
         post.saveInBackground { exception ->
             if (exception != null) {
                 // Something has went wrong
