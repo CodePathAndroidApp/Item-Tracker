@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Item Tracker</string>
+
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Paste BOTH strings as required -->
+    <string name="back4app_app_id">gGcn7m0Tj0n1NA64wC40fTIsdxmAcUq5ipWeYQTz</string>
+    <string name="back4app_client_key">pF5bAcyHs6DQPRcykeS0EMJc6bBFMb5phKdER5vD</string>
+</resources>
