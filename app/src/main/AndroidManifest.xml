@@ -34,7 +34,8 @@
 
         <activity
             android:name=".LoginActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.ItemTracker.Starting">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
