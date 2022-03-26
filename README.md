@@ -28,6 +28,7 @@ Item Tracker is an app that helps users remember where their lost items (e.g. gl
 - [x] User can log in and log out of his or her account.
 - [x] The current signed in user is persisted across app restarts.
 - [ ] User can take a photo, add an item type description, and post it to the database.
+- [ ] User can view the list if item they lost in their profile screen
 - [ ] Posts are accompanied by map and location data of the place where the post is made
 - [ ] User can use a search bar to look up previous posts
 
@@ -38,37 +39,31 @@ Item Tracker is an app that helps users remember where their lost items (e.g. gl
 
 ### 2. Screen Archetypes
 
-* [list first screen here]
-   * [list associated required story here]
-   * ...
-* [list second screen here]
-   * [list associated required story here]
-   * ...
+* Login / Registration Screen
+* User Profile Screen
+  * See the list of items they posted/lost
+* Main Screen
+  * See items lost by different user with description
+* Post Detail Screen
+  * See the detail of the lost item
 
 ### 3. Navigation
 
-**Tab Navigation** (Tab to Screen)
-
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
-
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* Login Page
+  * Login -> Main Screen
+* Main Screen
+  * Bottom Navigation
+    * Main Screen -> Navigate to main screen
+    * Create Post -> Navigate to post screen
+    * User Page -> Navigate to user profile
+  * Click on post -> detail page
+  
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
 <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
-
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
 
 ## Schema 
 [This section will be completed in Unit 9]
