@@ -1,7 +1,12 @@
 package com.example.itemtracker.fragments
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,30 +16,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import com.example.itemtracker.MainActivity
 import com.example.itemtracker.Post
 import com.example.itemtracker.R
+import com.google.android.gms.common.util.CollectionUtils
 import com.parse.ParseFile
 import com.parse.ParseUser
 import java.io.File
+import java.util.*
 
-class ComposeFragment : Fragment() {
+class ComposeFragment : Fragment(), LocationListener {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
     lateinit var ivPreview: ImageView
+
+    lateinit var locationManager: LocationManager
+    private val locationPermissionCode = 2
+
+    var cityName = ""
+    var stateName = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        super.onCreate(savedInstanceState)
         return inflater.inflate(R.layout.fragment_compose, container, false)
     }
 
@@ -61,7 +76,7 @@ class ComposeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btnSubmit).setOnClickListener {
             val description = view.findViewById<EditText>(R.id.description).text.toString()
-            val lostlocation = view.findViewById<EditText>(R.id.lostlocation).text.toString()
+            val lostlocation = view.findViewById<TextView>(R.id.lostlocation).text.toString()
             val user = ParseUser.getCurrentUser()
             if (photoFile != null) {
                 submitPost(description, lostlocation, user, photoFile!!)
@@ -113,6 +128,54 @@ class ComposeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btnTakePicture).setOnClickListener {
             onLaunchCamera()
+        }
+
+        fun locateMe() {
+            locationManager = this.context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            if ((ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                ActivityCompat.requestPermissions(requireContext() as Activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+        }
+
+        view.findViewById<Button>(R.id.btnLocate).setOnClickListener {
+            locateMe()
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        try {
+            val addresses: MutableList<Address>
+            val geocoder = Geocoder(context, Locale.ENGLISH)
+            addresses =
+                geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            if (!CollectionUtils.isEmpty(addresses)) {
+                val fetchedAddress = addresses[0]
+                if (fetchedAddress.maxAddressLineIndex > -1) {
+                    fetchedAddress.locality?.let {
+                        cityName = it
+                    }
+                    fetchedAddress.adminArea?.let {
+                        stateName = it
+                    }
+                }
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        var location = "$cityName, $stateName"
+        getView()?.findViewById<EditText>(R.id.lostlocation)?.setText(location)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == locationPermissionCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
