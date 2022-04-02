@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.itemtracker.MainActivity
 import com.example.itemtracker.Post
 import com.example.itemtracker.PostAdapter
@@ -22,8 +23,9 @@ open class MainFragment : Fragment() {
     lateinit var rvPosts : RecyclerView
     lateinit var rvAdapter : PostAdapter
 
-
     var allPosts: MutableList<Post> = mutableListOf()
+
+    lateinit var swipeContainer: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +38,28 @@ open class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Pull to refresh
+        swipeContainer = view.findViewById(R.id.swipeContainer)
+        swipeContainer.setOnRefreshListener {
+            Log.i(TAG, "Refreshing timeline")
+            queryPosts()
+            swipeContainer.isRefreshing = false
+        }
+        // Configure the refreshing color
+        swipeContainer.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
+
+        // Set up our views and click listeners
         rvPosts = view.findViewById(R.id.rvPosts)
 
         rvAdapter = PostAdapter(requireContext(), allPosts)
         rvPosts.adapter = rvAdapter
 
+        // Set layout manager on RecyclerView
         rvPosts.layoutManager = LinearLayoutManager(requireContext())
 
         queryPosts()
