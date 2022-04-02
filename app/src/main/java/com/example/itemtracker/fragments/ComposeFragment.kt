@@ -25,13 +25,12 @@ import androidx.core.content.FileProvider
 import com.example.itemtracker.MainActivity
 import com.example.itemtracker.Post
 import com.example.itemtracker.R
-import com.google.android.gms.common.util.CollectionUtils
 import com.parse.ParseFile
 import com.parse.ParseUser
 import java.io.File
 import java.util.*
 
-class ComposeFragment : Fragment(), LocationListener {
+class ComposeFragment : Fragment()/*, LocationListener*/ {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
@@ -130,6 +129,7 @@ class ComposeFragment : Fragment(), LocationListener {
             onLaunchCamera()
         }
 
+        /*
         fun locateMe() {
             locationManager = this.context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if ((ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
@@ -141,8 +141,10 @@ class ComposeFragment : Fragment(), LocationListener {
         view.findViewById<Button>(R.id.btnLocate).setOnClickListener {
             locateMe()
         }
+         */
     }
 
+    /*
     override fun onLocationChanged(location: Location) {
         try {
             val addresses: MutableList<Address>
@@ -178,6 +180,7 @@ class ComposeFragment : Fragment(), LocationListener {
             }
         }
     }
+     */
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
