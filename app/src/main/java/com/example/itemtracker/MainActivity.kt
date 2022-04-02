@@ -15,7 +15,6 @@ import com.parse.ParseQuery
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
-
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager: FragmentManager = supportFragmentManager
 
         findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener {
-            item ->
+            item -
 
             var fragmentToShow: Fragment? = null
             when (item.itemId) {
@@ -51,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         // Set default menu item selection of BottomNavigationView item; set which fragment is shown by default
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.action_main
-
     }
 
     fun queryPosts() {
