@@ -1,28 +1,29 @@
 package com.example.itemtracker.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.itemtracker.MainActivity
 import com.example.itemtracker.Post
 import com.example.itemtracker.PostAdapter
 import com.example.itemtracker.R
+import com.parse.FindCallback
+import com.parse.ParseException
 import com.parse.ParseQuery
 
 
-class MainFragment : Fragment() {
+open class MainFragment : Fragment() {
 
-    private lateinit var rvPosts : RecyclerView
-
-    private lateinit var rvAdapter : PostAdapter
-
-
-    private var posts = mutableListOf<Post>()
+    lateinit var rvPosts : RecyclerView
+    lateinit var rvAdapter : PostAdapter
 
 
+    var allPosts: MutableList<Post> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +38,7 @@ class MainFragment : Fragment() {
 
         rvPosts = view.findViewById(R.id.rvPosts)
 
-        rvAdapter = PostAdapter(requireContext(), posts)
+        rvAdapter = PostAdapter(requireContext(), allPosts)
         rvPosts.adapter = rvAdapter
 
         rvPosts.layoutManager = LinearLayoutManager(requireContext())
@@ -45,7 +46,7 @@ class MainFragment : Fragment() {
         queryPosts()
     }
 
-    private fun queryPosts() {
+    open fun queryPosts() {
         val query : ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
 
         query.include(Post.KEY_USER)
@@ -53,16 +54,26 @@ class MainFragment : Fragment() {
         query.addDescendingOrder("createdAt")
         query.limit = 20
 
-        query.findInBackground { returnedPosts, e ->
-            if(e != null) {
-                e.printStackTrace()
-            }
-            else {
-                if(returnedPosts != null) {
-                    posts.addAll(returnedPosts)
-                    rvAdapter.notifyDataSetChanged()
+        query.findInBackground(object: FindCallback<Post> {
+            override fun done(posts: MutableList<Post>?, e: ParseException?) {
+                if (e != null) {
+                    // something went wrong
+                    Log.e(TAG, "Error fetching post");
+                } else {
+                    if (posts != null) {
+                        for (post in posts) {
+                            Log.i(MainActivity.TAG, "Post: " + post.getDescription() + " , username: " + post.getUser()?.username)
+                        }
+
+                        allPosts.addAll(posts)
+                        rvAdapter.notifyDataSetChanged()
+                    }
                 }
             }
-        }
+        })
+    }
+
+    companion object {
+        const val TAG = "MainFragment"
     }
 }

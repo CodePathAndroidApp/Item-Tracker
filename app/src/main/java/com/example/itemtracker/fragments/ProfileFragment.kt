@@ -1,60 +1,39 @@
 package com.example.itemtracker.fragments
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.itemtracker.R
+import android.util.Log
+import com.example.itemtracker.MainActivity
+import com.example.itemtracker.Post
+import com.parse.FindCallback
+import com.parse.ParseException
+import com.parse.ParseQuery
+import com.parse.ParseUser
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ProfileFragment: MainFragment() {
+    override fun queryPosts() {
+        val query : ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        query.include(Post.KEY_USER)
+        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+        query.addDescendingOrder("createdAt")
+        query.limit = 20
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
+        query.findInBackground(object: FindCallback<Post> {
+            override fun done(posts: MutableList<Post>?, e: ParseException?) {
+                if (e != null) {
+                    // something went wrong
+                    Log.e(TAG, "Error fetching post");
+                } else {
+                    if (posts != null) {
+                        for (post in posts) {
+                            Log.i(MainActivity.TAG, "Post: " + post.getDescription() + " , username: " + post.getUser()?.username)
+                        }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                        allPosts.addAll(posts)
+                        rvAdapter.notifyDataSetChanged()
+                    }
                 }
             }
+        })
     }
 }
