@@ -16,10 +16,11 @@ class LoginActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        goToMainActivity()
+        /*
         if(ParseUser.getCurrentUser() != null) {
             goToMainActivity()
-        }
+        }*/
 
         ParseUser.logOut()
 
