@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager: FragmentManager = supportFragmentManager
 
         findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener {
-            item -
+            item ->
 
             var fragmentToShow: Fragment? = null
             when (item.itemId) {
@@ -50,29 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         // Set default menu item selection of BottomNavigationView item; set which fragment is shown by default
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.action_main
-    }
-
-    fun queryPosts() {
-        val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
-        query.include(Post.KEY_USER)
-        // Return the Posts in descending order based on time created; i.e. newer posts appear first
-        query.addDescendingOrder("createdAt")
-        // Find all Post objects in server
-        query.findInBackground(object : FindCallback<Post> {
-            override fun done(posts: MutableList<Post>?, e: ParseException?) {
-                if (e != null) {
-                    Log.e(TAG, "Error fetching posts")
-                } else {
-                    if(posts != null) {
-                        for (post in posts) {
-                            Log.i(
-                                MainActivity.TAG, "Post: " + post.getDescription() + "lost at: " + post.getLostlocation()
-                                        + " , username: " + post.getUser()?.username)
-                        }
-                    }
-                }
-            }
-        })
     }
 
     companion object {
