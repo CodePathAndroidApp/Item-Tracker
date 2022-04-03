@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.android.material.textfield.TextInputLayout
 import com.parse.ParseUser
 
 class LoginActivity : AppCompatActivity() {
@@ -50,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 goToMainActivity()
             } else {
                 e.printStackTrace()
+                setErrorMessage(e.code)
                 Toast.makeText(this, "Error signing up", Toast.LENGTH_SHORT).show()
             }
         }
@@ -62,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
                 goToMainActivity()
             } else {
                 e.printStackTrace()
+                setErrorMessage(e.code)
                 Toast.makeText(this, "Error logging in", Toast.LENGTH_SHORT).show()
             }})
         )
@@ -75,5 +78,27 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "LoginActivity"
+    }
+
+    private fun setErrorMessage(code: Int) {
+        val usernameInput = findViewById<TextInputLayout>(R.id.username_text_input_layout)
+        val passwordInput = findViewById<TextInputLayout>(R.id.password_text_input_layout)
+        usernameInput.error = null
+        passwordInput.error = null
+        when (code) {
+            101 -> {
+                usernameInput.error = "Invalid username/password"
+                passwordInput.error = "Invalid username/password"
+            }
+            200 -> {
+                usernameInput.error =  "please enter username."
+            }
+            201 -> {
+                passwordInput.error = "please enter password."
+            }
+            202 -> {
+                usernameInput.error = "username is already exist."
+            }
+        }
     }
 }
