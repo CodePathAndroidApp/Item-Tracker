@@ -17,5 +17,10 @@
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="Profile"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@android:drawable/ic_menu_set_as"
+        android:title="Logout"
+        app:showAsAction="always" />
 
 </menu>

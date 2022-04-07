@@ -1,5 +1,6 @@
 package com.example.itemtracker
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +10,11 @@ import com.example.itemtracker.fragments.ComposeFragment
 import com.example.itemtracker.fragments.ProfileFragment
 import com.example.itemtracker.fragments.MainFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseQuery
+import com.parse.ParseUser
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -39,9 +42,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.action_profile -> {
                     fragmentToShow = ProfileFragment()
                 }
+                R.id.action_logout -> {
+                    ParseUser.getCurrentUser().deleteInBackground();
+                    ParseUser.logOutInBackground();
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
 
-            if (fragmentToShow != null) {
+            if (fragmentToShow != null && item.itemId != R.id.action_logout) {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragmentToShow).commit()
             }
 
