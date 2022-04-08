@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
             goToMainActivity()
         }
 
-        ParseUser.logOut()
+        //ParseUser.logOut()
 
         findViewById<Button>(R.id.login_button).setOnClickListener {
             val username = findViewById<EditText>(R.id.et_username).text.toString()

@@ -1,6 +1,7 @@
 package com.example.itemtracker
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import java.util.*
 
 class PostAdapter(
     private val context: Context,
@@ -43,13 +45,35 @@ class PostAdapter(
         val tvTimeStamp = itemView.findViewById<TextView>(R.id.tvTimeStamp)
 
         fun bind(post : Post) {
-            tvUsername.text = itemView.context.getString(R.string.username, post.getUser()?.username)
+            if(post.getUser() != null) {
+                tvUsername.text = itemView.context.getString(R.string.username, post.getUser()?.username)
+                tvUsername.setTextColor(Color.parseColor("#000000"))
+            }
+            else {
+                tvUsername.text = itemView.context.getString(R.string.username, "(User not found)")
+                tvUsername.setTextColor(Color.parseColor("#FF0000"))
+            }
             tvDescription.text = itemView.context.getString(R.string.description, post.getDescription())
-            tvTimeStamp.text = itemView.context.getString(R.string.time_stamp, "timeStamp")
 
+            //set time stamp
+            val currentTime = System.currentTimeMillis()
+            val diff : Long = (currentTime - post.createdAt.time) / (1000 * 60 * 60 * 24)
+            val then = Calendar.getInstance()
+            then.time = post.createdAt
+            val createTime = then.get(Calendar.DAY_OF_MONTH).toString() + " " +
+                    then.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) +
+                    " " +  then.get(Calendar.YEAR).toString()
+
+            tvTimeStamp.text = itemView.context.getString(
+                R.string.time_stamp,
+                createTime,
+                diff
+            )
+
+            //load the image
             Glide.with(itemView.context)
                 .load(post.getImage()?.url)
-                .fitCenter()
+                .override(150, 200)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,

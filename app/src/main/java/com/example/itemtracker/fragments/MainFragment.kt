@@ -42,6 +42,7 @@ open class MainFragment : Fragment() {
         swipeContainer = view.findViewById(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
             Log.i(TAG, "Refreshing timeline")
+            allPosts.clear()
             queryPosts()
             swipeContainer.isRefreshing = false
         }
