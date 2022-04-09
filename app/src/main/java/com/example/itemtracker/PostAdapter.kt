@@ -19,7 +19,7 @@ import java.util.*
 
 class PostAdapter(
     private val context: Context,
-    private val posts: MutableList<Post>)
+    private val posts: List<Post>)
     : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.ViewHolder {
@@ -38,11 +38,6 @@ class PostAdapter(
 
     override fun getItemCount(): Int {
         return posts.size
-    }
-
-    fun removeItem(position: Int) {
-        posts.removeAt(position)
-        notifyDataSetChanged()
     }
 
 

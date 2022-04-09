@@ -9,7 +9,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="username">%1$s</string>
-    <string name="time_stamp">%1$s</string>
+    <string name="time_stamp">%1$s\n(%2$d days ago)</string>
     <string name="description">%1$s</string>
     <string name="location">%1$s</string>
 </resources>
