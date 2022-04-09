@@ -6,18 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.itemtracker.MainActivity
-import com.example.itemtracker.MainActivity.Companion.TAG
 import com.example.itemtracker.Post
 import com.example.itemtracker.PostAdapter
 import com.example.itemtracker.R
 import com.parse.*
-import java.io.File
 
 
 open class MainFragment : Fragment() {
@@ -59,7 +55,18 @@ open class MainFragment : Fragment() {
         // Set up our views and click listeners
         rvPosts = view.findViewById(R.id.rvPosts)
 
-        rvAdapter = PostAdapter(requireContext(), allPosts)
+        val onClickDeleteListener = object : PostAdapter.OnClickDeleteListener {
+            override fun onClickDelete(pos: Int) {
+                allPosts[pos].deleteInBackground {
+                    if(it == null) {
+                        allPosts.removeAt(pos)
+                        rvAdapter.notifyItemRemoved(pos)
+                    }
+                }
+            }
+        }
+
+        rvAdapter = PostAdapter(requireContext(), allPosts, onClickDeleteListener)
         rvPosts.adapter = rvAdapter
 
         // Set layout manager on RecyclerView
@@ -84,7 +91,7 @@ open class MainFragment : Fragment() {
             override fun done(posts: MutableList<Post>?, e: ParseException?) {
                 if (e != null) {
                     // something went wrong
-                    Log.e(TAG, "Error fetching post");
+                    Log.e(TAG, "Error fetching post")
                 } else {
                     if (posts != null) {
                         for (post in posts) {
@@ -111,7 +118,7 @@ open class MainFragment : Fragment() {
             override fun done(posts: MutableList<Post>?, e: ParseException?) {
                 if (e != null) {
                     // something went wrong
-                    Log.e(TAG, "Error fetching post");
+                    Log.e(TAG, "Error fetching post")
                 } else {
                     if (posts != null) {
                         for (post in posts) {

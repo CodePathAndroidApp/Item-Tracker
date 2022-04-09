@@ -19,8 +19,13 @@ import java.util.*
 
 class PostAdapter(
     private val context: Context,
-    private val posts: List<Post>)
+    private val posts: List<Post>,
+    private val onClickDeleteListener: OnClickDeleteListener)
     : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+
+    interface OnClickDeleteListener {
+        fun onClickDelete(pos : Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false)
@@ -29,10 +34,6 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts[position]
-        holder.itemView.findViewById<Button>(R.id.btnDelete).setOnClickListener{
-            post.deleteInBackground()
-            notifyDataSetChanged()
-        }
         holder.bind(post)
     }
 
@@ -43,10 +44,13 @@ class PostAdapter(
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val ivImage: ImageView = itemView.findViewById(R.id.ivImage)
-        val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
-        val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
+        private val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
+        private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
         //use for displaying time stamp(not yet implemented)
-        val tvTimeStamp = itemView.findViewById<TextView>(R.id.tvTimeStamp)
+        private val tvTimeStamp: TextView = itemView.findViewById(R.id.tvTimeStamp)
+
+        private val btnDelete : Button = itemView.findViewById(R.id.btnDelete)
+
 
         fun bind(post : Post) {
             if(post.getUser() != null) {
@@ -101,6 +105,10 @@ class PostAdapter(
                     }
                 })
                 .into(ivImage)
+
+            btnDelete.setOnClickListener {
+                onClickDeleteListener.onClickDelete(adapterPosition)
+            }
         }
     }
 }

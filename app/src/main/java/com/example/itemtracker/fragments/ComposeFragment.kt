@@ -26,6 +26,7 @@ import com.example.itemtracker.MainActivity
 import com.example.itemtracker.Post
 import com.example.itemtracker.R
 import com.google.android.gms.common.util.CollectionUtils
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.parse.ParseFile
 import com.parse.ParseUser
 import java.io.File
@@ -70,6 +71,7 @@ class ComposeFragment : Fragment(), LocationListener {
                     exception.printStackTrace()
                 } else {
                     Log.i(MainActivity.TAG, "Successfully saved post")
+                    activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.selectedItemId = R.id.action_main
                 }
             }
         }
