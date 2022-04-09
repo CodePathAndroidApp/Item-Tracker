@@ -15,6 +15,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.parse.ParseUser
 import java.util.*
 
 class PostAdapter(
@@ -54,14 +55,22 @@ class PostAdapter(
 
         fun bind(post : Post) {
             if(post.getUser() != null) {
+                if(post.getUser()!!.username == ParseUser.getCurrentUser().username) {
+                    btnDelete.visibility = View.VISIBLE
+                }
+                else {
+                    btnDelete.visibility = View.GONE
+                }
                 tvDescription.text = itemView.context.getString(R.string.description, post.getDescription())
                 tvDescription.setTextColor(Color.parseColor("#000000"))
             }
             else {
+                btnDelete.visibility = View.GONE
                 tvDescription.text = itemView.context.getString(R.string.description, "(User not found)")
                 tvDescription.setTextColor(Color.parseColor("#FF0000"))
             }
             tvLocation.text = itemView.context.getString(R.string.location, post.getLostlocation())
+
 
             //set time stamp
             val currentTime = System.currentTimeMillis()
