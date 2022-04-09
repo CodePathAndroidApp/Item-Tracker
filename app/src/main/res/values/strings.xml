@@ -11,4 +11,5 @@
     <string name="username">%1$s</string>
     <string name="time_stamp">%1$s</string>
     <string name="description">%1$s</string>
+    <string name="location">%1$s</string>
 </resources>

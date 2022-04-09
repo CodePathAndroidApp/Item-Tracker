@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
                     fragmentToShow = ProfileFragment()
                 }
                 R.id.action_logout -> {
-                    ParseUser.getCurrentUser().deleteInBackground();
                     ParseUser.logOutInBackground();
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
                     startActivity(intent)
